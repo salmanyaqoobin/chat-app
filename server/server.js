@@ -9,6 +9,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const socketIO = require('socket.io');
 
+const {generateMessage} = require('./utils/message');
+
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT;
 
@@ -21,16 +23,8 @@ app.use(express.static(publicPath));
 io.on('connection', function(socket){
     console.log('a user connected');
     var user = "Salman";
-    socket.emit("newMessage", {
-        from: "Admin",
-        text: `Welcome ${user} to chat app`,
-        createdAt: new Date().getTime()
-    });
-    socket.broadcast.emit("newMessage", {
-        from: "Admin",
-        text: `${user} have been joined`,
-        createdAt: new Date().getTime()
-    });
+    socket.emit("newMessage", generateMessage("Admin", `Welcome ${user} to chat app`));
+    socket.broadcast.emit("newMessage", generateMessage("Admin", `${user} has been joined`));
 
     socket.on('createMessage', function(newMessage){
         console.log('Create Message:', newMessage);
@@ -40,11 +34,7 @@ io.on('connection', function(socket){
         //    createdAt: new Date().getTime()
         //});
 
-        socket.broadcast.emit("newMessage", {
-            from: newMessage.from,
-            text: newMessage.text,
-            createdAt: new Date().getTime()
-        });
+        socket.broadcast.emit("newMessage", generateMessage(newMessage.from, newMessage.text));
 
     });
 
