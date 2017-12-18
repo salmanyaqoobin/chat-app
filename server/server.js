@@ -26,7 +26,7 @@ io.on('connection', function(socket){
     socket.emit("newMessage", generateMessage("Admin", `Welcome ${user} to chat app`));
     socket.broadcast.emit("newMessage", generateMessage("Admin", `${user} has been joined`));
 
-    socket.on('createMessage', function(newMessage){
+    socket.on('createMessage', function(newMessage, callback){
         console.log('Create Message:', newMessage);
         //io.emit("newMessage", {
         //    from: newMessage.from,
@@ -35,7 +35,7 @@ io.on('connection', function(socket){
         //});
 
         socket.broadcast.emit("newMessage", generateMessage(newMessage.from, newMessage.text));
-
+        callback();
     });
 
     //socket.on('newEmail', function(newEmail){
