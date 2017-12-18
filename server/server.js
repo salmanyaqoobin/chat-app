@@ -9,7 +9,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const socketIO = require('socket.io');
 
-const {generateMessage} = require('./utils/message');
+const {generateMessage, generateLocationMessage} = require('./utils/message');
 
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT;
@@ -28,14 +28,12 @@ io.on('connection', function(socket){
 
     socket.on('createMessage', function(newMessage, callback){
         console.log('Create Message:', newMessage);
-        //io.emit("newMessage", {
-        //    from: newMessage.from,
-        //    text: newMessage.text,
-        //    createdAt: new Date().getTime()
-        //});
-
         socket.broadcast.emit("newMessage", generateMessage(newMessage.from, newMessage.text));
         callback();
+    });
+
+    socket.on("sendLocationMessage", function(location, callback){
+        io.emit("newLocationMessage", generateLocationMessage("admin", location.lat, location.long));
     });
 
     //socket.on('newEmail', function(newEmail){
