@@ -15,12 +15,14 @@ socket.on('disconnect', function(){
 
 socket.on('newMessage', function(message){
     console.log("newMessage:",message);
-    $('#messages').append('<li><b>'+message.from+'</b>: '+message.text+'</li>');
+    var fotmattedTime = moment(message.createdAt).format("h:mm a");
+    $('#messages').append('<li><b>'+message.from+'</b>: '+fotmattedTime+' '+message.text+'</li>');
 });
 
 socket.on('newLocationMessage', function(newLocationMessage){
     console.log("newLocationMessage:",newLocationMessage);
-    $('#messages').append('<li><b>'+newLocationMessage.from+'</b>: <a target="_blank" href="'+newLocationMessage.url+'">My location</a></li>');
+    var fotmattedTime = moment(message.createdAt).format("h:mm a");
+    $('#messages').append('<li><b>'+newLocationMessage.from+'</b>: '+fotmattedTime+' <a target="_blank" href="'+newLocationMessage.url+'">My location</a></li>');
 });
 
 
@@ -28,7 +30,7 @@ $('form').submit(function(){
     var message = {text: $('#message').val(), from: 'user'};
     socket.emit('createMessage', message, function(data){
         console.log("got it", data);
-        $('#messages').append('<li><b>'+message.from+'</b>: '+message.text+'</li>');
+        //$('#messages').append('<li><b>'+message.from+'</b>: '+message.text+'</li>');
         $('#message').val('');
     });
 
