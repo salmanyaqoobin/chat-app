@@ -3,24 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Chat App</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font: 13px Helvetica, Arial; }
-        form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-        form input { border: 0; padding: 10px; width: 80%; margin-right: .5%; }
-        form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; margin-right: .5%; }
-        #messages { list-style-type: none; margin: 0; padding: 0; }
-        #messages li { padding: 5px 10px; }
-        #messages li:nth-child(odd) { background: #eee; }
-    </style>
+    <link href="css/styles.css" rel="stylesheet" />
 </head>
-<body>
-    <p>Welcome to chat app</p>
-    <ul id="messages"></ul>
-    <form action="">
-        <input id="message" placeholder="Enter Message here" autocomplete="off" /><button id="send-location" type="button">Location</button><button>Send</button>
-    </form>
+<body class="chat">
+    <div class="chat__sidebar">
+        <h3>Peoples</h3>
+        <div id="users"></div>
+    </div>
+    <div class="chat__main">
+        <ul id="messages" class="chat__messages"></ul>
+        <div class="chat__footer">
+            <form action="">
+                <input id="message" placeholder="Enter Message here" autofocus autocomplete="off" /><button>Send</button>
+            </form>
+            <button id="send-location" type="button">Send location</button>
+        </div>
 
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/lib/jquery-1.11.1.min.js"></script>
     <script src="/js/index.js"></script>

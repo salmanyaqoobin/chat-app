@@ -29,7 +29,7 @@ io.on('connection', function(socket){
     socket.on('createMessage', function(newMessage, callback){
         console.log('Create Message:', newMessage);
         socket.broadcast.emit("newMessage", generateMessage(newMessage.from, newMessage.text));
-        callback();
+        callback('ss');
     });
 
     socket.on("sendLocationMessage", function(location, callback){
