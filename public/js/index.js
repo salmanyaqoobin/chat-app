@@ -16,13 +16,26 @@ socket.on('disconnect', function(){
 socket.on('newMessage', function(message){
     console.log("newMessage:",message);
     var fotmattedTime = moment(message.createdAt).format("h:mm a");
-    $('#messages').append('<li><b>'+message.from+'</b>: '+fotmattedTime+' '+message.text+'</li>');
+    //$('#messages').append('<li><b>'+message.from+'</b>: '+fotmattedTime+' '+message.text+'</li>');
+    var template = $("#message_template").html();
+    var html =  Mustache.render(template, {
+        text: message.text,
+        from: message.from,
+        createdAt: fotmattedTime
+    });
+    $('#messages').append(html);
 });
 
 socket.on('newLocationMessage', function(newLocationMessage){
     console.log("newLocationMessage:",newLocationMessage);
+    var template = $("#location_template").html();
     var fotmattedTime = moment(message.createdAt).format("h:mm a");
-    $('#messages').append('<li><b>'+newLocationMessage.from+'</b>: '+fotmattedTime+' <a target="_blank" href="'+newLocationMessage.url+'">My location</a></li>');
+    var html =  Mustache.render(template, {
+        url: newLocationMessage.url,
+        from: newLocationMessage.from,
+        createdAt: fotmattedTime
+    });
+    $('#messages').append(html);
 });
 
 
