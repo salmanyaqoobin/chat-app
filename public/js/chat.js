@@ -22,8 +22,15 @@ function scrollToBottom(){
 
 socket.on('connect', function(){
     console.log('connected to server.');
-    //socket.emit('newEmail', {email: "sy@in-hq.com", title:"Hello Salman"});
-    //socket.emit('createMessage', {from:"sy@in-hq.com", text:"some text"});
+    var params = jQuery.deparam(window.location.search);
+    socket.emit("join", params , function(err){
+        if(err){
+            alert(err);
+            window.location.href = "/";
+        } else {
+            console.log('no error');
+        }
+    });
 });
 
 socket.on('disconnect', function(){
@@ -55,6 +62,15 @@ socket.on('newLocationMessage', function(newLocationMessage){
     });
     $('#messages').append(html);
     scrollToBottom();
+});
+
+socket.on("updateUsersList", function(users){
+    $("#users").html("");
+    var ul = $("<ul></ul>");
+    users.forEach((user)=>{
+        ul.append("<li>"+user+"</li>");
+    });
+    $("#users").html(ul);
 });
 
 
