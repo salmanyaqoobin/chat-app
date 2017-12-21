@@ -53,12 +53,19 @@ io.on('connection', function(socket){
     });
 
     socket.on('createMessage', function(newMessage, callback){
-        io.emit("newMessage", generateMessage(newMessage.from, newMessage.text));
+        var user = users.getUser(socket.id);
+        if(user && isRealString(newMessage.text)){
+            io.to(user.room).emit("newMessage", generateMessage(user.name, newMessage.text));
+        }
+
         callback('ss');
     });
 
     socket.on("sendLocationMessage", function(location, callback){
-        io.emit("newLocationMessage", generateLocationMessage("admin", location.lat, location.long));
+        var user = users.getUser(socket.id);
+        if(user){
+            io.to(user.room).emit("newLocationMessage", generateLocationMessage(user.name, location.lat, location.long));
+        }
     });
 
     //socket.on('newEmail', function(newEmail){
